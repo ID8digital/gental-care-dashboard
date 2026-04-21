@@ -3,221 +3,468 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gental Care — ORM Intelligence Dashboard</title>
+<title>ORM Intelligence — ID8 Digital</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --green: #2D6A4F; --green-l: #52B788; --green-p: #D8F3DC;
-  --dark: #0F172A; --mid: #1E293B;
-  --amber: #D97706; --amber-p: #FEF3C7;
-  --red: #DC2626; --red-p: #FEE2E2;
-  --blue: #2563EB; --blue-p: #EFF6FF;
-  --purple: #7C3AED; --purple-p: #F5F3FF;
-  --border: #E2E8F0; --muted: #64748B;
-  --text: #0F172A; --bg: #F8FAFC;
-  --card: #FFFFFF; --radius: 10px; --radius-lg: 16px;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080C14;--bg2:#0D1320;--bg3:#111827;--bg4:#1A2235;
+  --border:#1E2D45;--border2:#253550;
+  --text:#E8EDF5;--text2:#8B9BB4;--text3:#4A5A72;
+  --green:#00E5A0;--green2:#00B87A;--green-bg:rgba(0,229,160,0.08);
+  --amber:#FFB800;--amber-bg:rgba(255,184,0,0.08);
+  --red:#FF4D6A;--red-bg:rgba(255,77,106,0.08);
+  --blue:#4D9FFF;--blue-bg:rgba(77,159,255,0.08);
+  --purple:#A78BFA;--purple-bg:rgba(167,139,250,0.08);
+  --radius:10px;--radius-lg:14px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:14px;overflow:hidden}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
 /* LOGIN */
-.login-page {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  background: var(--dark);
+.login-wrap{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+  background-image:radial-gradient(ellipse at 20% 50%,rgba(0,229,160,0.04) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 20%,rgba(77,159,255,0.04) 0%,transparent 50%);
 }
-.login-box {
-  background: #1E293B; border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--radius-lg); padding: 40px; width: 380px;
+.login-card{
+  width:400px;padding:40px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:20px;
 }
-.login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
-.login-leaf { width: 36px; height: 36px; background: var(--green-l); border-radius: 9px 9px 9px 2px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.login-brand { font-family: 'DM Serif Display', serif; font-size: 18px; color: #fff; }
-.login-title { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 6px; }
-.login-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
-.login-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px; display: block; }
-.login-input {
-  width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
-  color: #fff; font-size: 13px; font-family: 'DM Sans', sans-serif;
-  outline: none; margin-bottom: 14px;
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:#000;
 }
-.login-input:focus { border-color: var(--green-l); }
-.login-btn {
-  width: 100%; padding: 12px; background: var(--green); color: #fff;
-  border: none; border-radius: 8px; font-size: 14px; font-weight: 500;
-  cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 6px;
-  transition: background 0.15s;
+.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--text)}
+.logo-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.login-h{font-family:'Syne',sans-serif;font-weight:700;font-size:24px;margin-bottom:6px}
+.login-p{font-size:13px;color:var(--text2);margin-bottom:28px}
+.field-label{font-size:11px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block}
+.field-input{
+  width:100%;padding:11px 14px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-size:13px;
+  font-family:'Instrument Sans',sans-serif;outline:none;
+  transition:border-color .15s;margin-bottom:14px;
 }
-.login-btn:hover { background: var(--green-l); }
-.login-error { color: #FCA5A5; font-size: 12px; margin-top: 8px; text-align: center; }
+.field-input:focus{border-color:var(--green)}
+.login-btn{
+  width:100%;padding:13px;margin-top:6px;
+  background:var(--green);color:#000;border:none;
+  border-radius:8px;font-size:14px;font-weight:600;
+  font-family:'Syne',sans-serif;cursor:pointer;
+  transition:opacity .15s;
+}
+.login-btn:hover{opacity:.9}
+.login-err{color:var(--red);font-size:12px;text-align:center;margin-top:10px}
 
-/* APP LAYOUT */
-.app { display: flex; height: 100vh; overflow: hidden; }
-.sidebar { width: 210px; background: var(--dark); flex-shrink: 0; display: flex; flex-direction: column; }
-.sb-brand { padding: 18px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-.leaf { width: 30px; height: 30px; background: var(--green-l); border-radius: 7px 7px 7px 2px; display: flex; align-items: center; justify-content: center; font-size: 15px; margin-bottom: 9px; }
-.sb-name { font-family: 'DM Serif Display', serif; font-size: 14px; color: #fff; }
-.sb-sub { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; letter-spacing: .05em; text-transform: uppercase; }
-.nav { flex: 1; padding: 10px 8px; }
-.nav-s { font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: .1em; text-transform: uppercase; padding: 10px 8px 4px; }
-.nav-i { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 7px; cursor: pointer; color: rgba(255,255,255,0.5); font-size: 13px; border: none; background: transparent; width: 100%; text-align: left; margin-bottom: 2px; transition: all .13s; }
-.nav-i:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
-.nav-i.active { background: var(--green); color: #fff; font-weight: 500; }
-.nav-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 10px; min-width: 18px; text-align: center; }
-.sb-footer { padding: 12px 14px; border-top: 1px solid rgba(255,255,255,0.07); font-size: 11px; color: rgba(255,255,255,0.35); display: flex; align-items: center; justify-content: space-between; }
-.logout-btn { background: none; border: none; color: rgba(255,255,255,0.35); cursor: pointer; font-size: 11px; font-family: 'DM Sans', sans-serif; }
-.logout-btn:hover { color: #fff; }
-.dot-on { width: 6px; height: 6px; border-radius: 50%; background: var(--green-l); box-shadow: 0 0 5px var(--green-l); display: inline-block; }
+/* APP */
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  padding:0;
+}
+.sb-top{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.sb-logo{display:flex;align-items:center;gap:9px}
+.sb-mark{
+  width:28px;height:28px;border-radius:7px;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:12px;color:#000;flex-shrink:0;
+}
+.sb-name{font-family:'Syne',sans-serif;font-weight:700;font-size:13px}
+.sb-tag{font-size:10px;color:var(--text3);margin-top:1px}
+
+/* Brand switcher */
+.brand-switch{
+  margin:12px 12px 0;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:8px 10px;
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+  transition:border-color .15s;
+}
+.brand-switch:hover{border-color:var(--border2)}
+.brand-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.brand-info{flex:1;min-width:0}
+.brand-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-platform{font-size:10px;color:var(--text3)}
+.brand-arrow{color:var(--text3);font-size:10px}
+
+.nav{flex:1;padding:12px 8px;overflow-y:auto}
+.nav-section{font-size:9px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;padding:8px 8px 4px;margin-top:4px}
+.nav-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:8px;
+  cursor:pointer;color:var(--text2);font-size:13px;
+  border:none;background:transparent;width:100%;text-align:left;
+  transition:all .12s;margin-bottom:1px;
+  font-family:'Instrument Sans',sans-serif;
+}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--green-bg);color:var(--green)}
+.nav-icon{width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.nav-badge{
+  margin-left:auto;background:var(--red);color:#fff;
+  font-size:10px;font-weight:600;padding:1px 6px;
+  border-radius:10px;min-width:18px;text-align:center;
+  font-family:'DM Mono',monospace;
+}
+
+.sb-bottom{
+  padding:12px;border-top:1px solid var(--border);
+}
+.live-indicator{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;background:var(--green-bg);
+  border-radius:8px;border:1px solid rgba(0,229,160,0.15);
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.live-text{font-size:11px;color:var(--green);font-weight:500}
+.live-sub{font-size:10px;color:var(--text3);margin-left:auto}
+.logout-btn{
+  width:100%;margin-top:8px;padding:8px;
+  background:transparent;border:1px solid var(--border);
+  border-radius:8px;color:var(--text3);font-size:12px;
+  cursor:pointer;font-family:'Instrument Sans',sans-serif;
+  transition:all .12s;
+}
+.logout-btn:hover{border-color:var(--border2);color:var(--text2)}
 
 /* MAIN */
-.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.topbar { height: 54px; background: var(--card); border-bottom: 1px solid var(--border); padding: 0 22px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-.tb-title { font-size: 15px; font-weight: 600; }
-.tb-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.live-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--green-l); }
-.pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green-l); animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.2)} }
-.content { flex: 1; overflow-y: auto; padding: 20px 22px; }
-.panel { display: none; }
-.panel.active { display: block; }
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
 
-/* METRICS */
-.metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
-.mc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; position: relative; overflow: hidden; }
-.mc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.mc.g::before { background: var(--green-l); }
-.mc.b::before { background: var(--blue); }
-.mc.a::before { background: var(--amber); }
-.mc.r::before { background: var(--red); }
-.mc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
-.mc-val { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--dark); line-height: 1; }
-.mc-foot { font-size: 11px; color: var(--muted); margin-top: 3px; }
+/* TOPBAR */
+.topbar{
+  height:56px;flex-shrink:0;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:0 24px;display:flex;align-items:center;gap:16px;
+}
+.page-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;flex:1}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.filter-chip{
+  padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;
+  cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--text2);
+  font-family:'Instrument Sans',sans-serif;transition:all .12s;
+}
+.filter-chip:hover{border-color:var(--border2);color:var(--text)}
+.filter-chip.active{background:var(--green-bg);border-color:rgba(0,229,160,0.3);color:var(--green)}
+.refresh-btn{
+  padding:6px 12px;border-radius:8px;font-size:12px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);cursor:pointer;font-family:'Instrument Sans',sans-serif;
+  transition:all .12s;
+}
+.refresh-btn:hover{border-color:var(--border2);color:var(--text)}
 
-/* CARDS */
-.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 14px; }
-.card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 14px; }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:20px 24px}
+.panel{display:none}
+.panel.active{display:block}
+
+/* METRICS GRID */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.metric-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:16px;
+  position:relative;overflow:hidden;transition:border-color .15s;
+}
+.metric-card:hover{border-color:var(--border2)}
+.metric-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.metric-card.m-green::before{background:var(--green)}
+.metric-card.m-blue::before{background:var(--blue)}
+.metric-card.m-amber::before{background:var(--amber)}
+.metric-card.m-red::before{background:var(--red)}
+.metric-label{font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.metric-val{font-family:'Syne',sans-serif;font-weight:700;font-size:28px;line-height:1;margin-bottom:4px}
+.metric-sub{font-size:11px;color:var(--text3)}
+.metric-icon{position:absolute;top:14px;right:14px;font-size:18px;opacity:.3}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.three-col{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+
+/* CARD */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:16px 18px;
+  margin-bottom:16px;
+}
+.card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.card-title{
+  font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3);
+}
+.card-action{
+  font-size:11px;color:var(--text3);cursor:pointer;
+  background:none;border:none;font-family:'Instrument Sans',sans-serif;
+  transition:color .12s;
+}
+.card-action:hover{color:var(--text2)}
 
 /* FEED */
-.feed-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); animation: fadeIn 0.3s ease; }
-.feed-item:last-child { border-bottom: none; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-.feed-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-.fi-fb { background: #E7F0FD; } .fi-ig { background: #FDE7F0; } .fi-tt { background: #E7F7FC; }
-.feed-body { flex: 1; min-width: 0; }
-.feed-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; flex-wrap: wrap; }
-.feed-platform { font-size: 11px; font-weight: 600; color: var(--muted); }
-.feed-time { font-size: 10px; color: var(--muted); }
-.feed-type-tag { font-size: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-.feed-msg { font-size: 13px; color: var(--text); margin-bottom: 5px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 500px; }
+.feed-item{
+  display:flex;gap:12px;padding:11px 0;
+  border-bottom:1px solid var(--border);
+  animation:slideIn .25s ease;
+}
+.feed-item:last-child{border-bottom:none}
+@keyframes slideIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.feed-platform-icon{
+  width:34px;height:34px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+}
+.pi-fb{background:rgba(24,119,242,0.12)}
+.pi-ig{background:rgba(225,48,108,0.12)}
+.pi-tt{background:rgba(0,242,234,0.1)}
+.feed-body{flex:1;min-width:0}
+.feed-top{display:flex;align-items:center;gap:6px;margin-bottom:3px;flex-wrap:wrap}
+.feed-platform-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.feed-time{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace}
+.feed-type{
+  font-size:9px;padding:1px 6px;border-radius:4px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;
+}
+.feed-msg{
+  font-size:13px;color:var(--text2);margin-bottom:6px;
+  line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.feed-tags{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
 
 /* BADGES */
-.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; }
-.b-reply { background: var(--blue-p); color: var(--blue); }
-.b-esc { background: var(--amber-p); color: var(--amber); }
-.b-mod { background: var(--purple-p); color: var(--purple); }
-.b-like { background: var(--green-p); color: var(--green); }
-.b-high { background: var(--red-p); color: var(--red); }
-.b-med { background: var(--amber-p); color: var(--amber); }
-.b-low { background: var(--green-p); color: var(--green); }
-.b-pos { background: var(--green-p); color: var(--green); }
-.b-neg { background: var(--red-p); color: var(--red); }
-.b-neu { background: #F1F5F9; color: var(--muted); }
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;
+}
+.b-reply{background:var(--blue-bg);color:var(--blue)}
+.b-esc{background:var(--amber-bg);color:var(--amber)}
+.b-mod{background:var(--purple-bg);color:var(--purple)}
+.b-like{background:var(--green-bg);color:var(--green)}
+.b-fail{background:var(--red-bg);color:var(--red)}
+.b-pos{background:var(--green-bg);color:var(--green)}
+.b-neg{background:var(--red-bg);color:var(--red)}
+.b-neu{background:rgba(139,155,180,0.1);color:var(--text2)}
+.intent-tag{
+  font-size:10px;color:var(--text3);
+  font-family:'DM Mono',monospace;
+}
 
-/* SENTIMENT */
-.sent-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 7px; }
-.sp { background: var(--green-l); } .sn { background: #94A3B8; } .sg { background: var(--red); }
+/* SENTIMENT BAR */
+.sent-visual{margin-bottom:14px}
+.sent-bar-wrap{display:flex;height:6px;border-radius:3px;overflow:hidden;margin-bottom:6px;gap:1px}
+.sb-pos{background:var(--green);border-radius:3px 0 0 3px}
+.sb-neu{background:var(--text3)}
+.sb-neg{background:var(--red);border-radius:0 3px 3px 0}
+.sent-legend{display:flex;gap:14px}
+.sl-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.sl-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
 /* TREND */
-.trend-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; }
-.trend-date { font-size: 11px; color: var(--muted); width: 80px; }
-.trend-bar { flex: 1; height: 6px; background: #F1F5F9; border-radius: 3px; overflow: hidden; }
-.trend-fill { height: 100%; border-radius: 3px; background: var(--green-l); transition: width 0.5s; }
-.trend-score { font-size: 12px; font-weight: 500; color: var(--dark); width: 28px; text-align: right; }
+.trend-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border)}
+.trend-row:last-child{border-bottom:none}
+.trend-date{font-size:11px;color:var(--text3);width:80px;flex-shrink:0;font-family:'DM Mono',monospace}
+.trend-track{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.trend-fill{height:100%;border-radius:2px;background:var(--green);transition:width .6s ease}
+.trend-score{font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);width:24px;text-align:right}
 
-/* ESC */
-.esc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 10px; }
-.esc-inner { display: flex; }
-.esc-stripe { width: 4px; flex-shrink: 0; }
-.esc-body { flex: 1; padding: 12px 14px; }
-.esc-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-.esc-msg { font-size: 13px; color: var(--text); font-style: italic; margin-bottom: 7px; line-height: 1.4; }
-.esc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.esc-actions { padding: 9px 14px; background: var(--bg); border-top: 1px solid var(--border); display: flex; gap: 7px; }
-.btn-sm { padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--text); font-family: 'DM Sans', sans-serif; transition: all .1s; }
-.btn-sm:hover { background: var(--bg); }
-.btn-sm.g { background: var(--green); color: #fff; border-color: var(--green); }
-.btn-sm.g:hover { background: var(--green-l); }
+/* INTENT */
+.intent-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border)}
+.intent-row:last-child{border-bottom:none}
+.intent-name{font-size:12px;color:var(--text2);width:160px;flex-shrink:0;font-family:'DM Mono',monospace}
+.intent-track{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.intent-fill{height:100%;border-radius:2px;background:var(--blue)}
+.intent-count{font-size:11px;color:var(--text3);width:24px;text-align:right;font-family:'DM Mono',monospace}
 
-/* FILTER */
-.filter-row { display: flex; gap: 7px; margin-bottom: 14px; flex-wrap: wrap; }
-.fb { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--muted); font-family: 'DM Sans', sans-serif; transition: all .12s; }
-.fb:hover { background: var(--bg); }
-.fb.active { background: var(--green); color: #fff; border-color: var(--green); }
+/* ESCALATIONS */
+.esc-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;margin-bottom:10px;
+  transition:border-color .15s;
+}
+.esc-card:hover{border-color:var(--border2)}
+.esc-inner{display:flex}
+.esc-stripe{width:3px;flex-shrink:0}
+.esc-body{flex:1;padding:12px 14px}
+.esc-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.esc-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)}
+.esc-msg{font-size:13px;color:var(--text2);font-style:italic;margin-bottom:8px;line-height:1.4}
+.esc-tags{display:flex;gap:6px;flex-wrap:wrap}
+.esc-actions{
+  padding:8px 14px;background:var(--bg3);
+  border-top:1px solid var(--border);display:flex;gap:7px;
+}
+.btn-sm{
+  padding:5px 12px;border-radius:6px;font-size:11px;font-weight:500;
+  cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--text2);
+  font-family:'Instrument Sans',sans-serif;transition:all .1s;
+}
+.btn-sm:hover{border-color:var(--border2);color:var(--text)}
+.btn-sm.primary{background:var(--green);color:#000;border-color:var(--green)}
+.btn-sm.primary:hover{opacity:.9}
 
-/* LOADING */
-.loading { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
-.spin { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; margin-right: 6px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* INTENT BARS */
-.ib-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,.04); }
-.ib-row:last-child { border-bottom: none; }
-.ib-name { font-size: 12px; width: 150px; flex-shrink: 0; color: var(--text); }
-.ib-track { flex: 1; height: 5px; background: #F1F5F9; border-radius: 3px; overflow: hidden; }
-.ib-fill { height: 100%; border-radius: 3px; background: var(--blue); }
-.ib-count { font-size: 11px; color: var(--muted); width: 24px; text-align: right; }
+/* FILTER ROW */
+.filter-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
 
 /* CONFIG */
-.cfg-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); outline: none; margin-bottom: 10px; }
-.cfg-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; display: block; }
-.btn-primary { padding: 9px 18px; background: var(--green); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; }
-.btn-primary:hover { background: var(--green-l); }
+.cfg-label{font-size:11px;color:var(--text3);margin-bottom:5px;display:block;letter-spacing:.06em;text-transform:uppercase}
+.cfg-input{
+  width:100%;padding:9px 12px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-size:13px;font-family:'Instrument Sans',sans-serif;
+  outline:none;margin-bottom:12px;transition:border-color .15s;
+}
+.cfg-input:focus{border-color:var(--green)}
+.btn-primary{
+  padding:9px 18px;background:var(--green);color:#000;
+  border:none;border-radius:8px;font-size:13px;font-weight:600;
+  cursor:pointer;font-family:'Syne',sans-serif;transition:opacity .15s;
+}
+.btn-primary:hover{opacity:.9}
+.cfg-status{font-size:12px;color:var(--text3);margin-top:8px}
 
-.empty { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
+/* EMPTY */
+.empty{
+  text-align:center;padding:48px 20px;color:var(--text3);
+}
+.empty-icon{font-size:32px;margin-bottom:10px;opacity:.3}
+.empty-text{font-size:13px}
+
+/* LOADING */
+.loading{text-align:center;padding:40px;color:var(--text3);font-size:13px}
+.spin{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid var(--border);border-top-color:var(--green);
+  border-radius:50%;animation:spin .8s linear infinite;
+  vertical-align:middle;margin-right:6px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* BRAND DROPDOWN */
+.brand-dropdown{
+  position:absolute;top:calc(100% + 8px);left:12px;right:12px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:10px;overflow:hidden;z-index:100;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);
+}
+.brand-option{
+  display:flex;align-items:center;gap:9px;padding:10px 12px;
+  cursor:pointer;transition:background .1s;font-size:13px;
+}
+.brand-option:hover{background:var(--bg4)}
+.brand-option.selected{color:var(--green)}
+
+.sb-brand-wrap{position:relative}
 </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="login-page" class="login-page">
-  <div class="login-box">
+<!-- LOGIN -->
+<div id="login-page" class="login-wrap">
+  <div class="login-card">
     <div class="login-logo">
-      <div class="login-leaf">🌿</div>
-      <div class="login-brand">Gental Care ORM</div>
+      <div class="logo-mark">I8</div>
+      <div>
+        <div class="logo-text">ID8 Digital</div>
+        <div class="logo-sub">ORM Intelligence Platform</div>
+      </div>
     </div>
-    <div class="login-title">Sign in</div>
-    <div class="login-sub">ID8 Digital — ORM Intelligence Dashboard</div>
-    <label class="login-label">Email</label>
-    <input type="email" class="login-input" id="login-email" placeholder="you@id8digital.com" />
-    <label class="login-label">Password</label>
-    <input type="password" class="login-input" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    <div class="login-h">Sign in</div>
+    <div class="login-p">Access your brand intelligence dashboard</div>
+    <label class="field-label">Email</label>
+    <input type="email" class="field-input" id="login-email" placeholder="you@id8.digital" />
+    <label class="field-label">Password</label>
+    <input type="password" class="field-input" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
     <button class="login-btn" onclick="doLogin()">Sign in →</button>
-    <div class="login-error" id="login-error"></div>
+    <div class="login-err" id="login-err"></div>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app" class="app" style="display:none">
   <div class="sidebar">
-    <div class="sb-brand">
-      <div class="leaf">🌿</div>
-      <div class="sb-name">Gental Care ORM</div>
-      <div class="sb-sub">Live Dashboard</div>
+    <div class="sb-top">
+      <div class="sb-logo">
+        <div class="sb-mark">I8</div>
+        <div>
+          <div class="sb-name">ORM Intelligence</div>
+          <div class="sb-tag">ID8 Digital Platform</div>
+        </div>
+      </div>
     </div>
+
+    <div class="sb-brand-wrap">
+      <div class="brand-switch" onclick="toggleBrandDropdown()">
+        <div class="brand-dot" id="brand-dot" style="background:var(--green)"></div>
+        <div class="brand-info">
+          <div class="brand-name" id="brand-name">ID8 Digital</div>
+          <div class="brand-platform">Facebook · Instagram</div>
+        </div>
+        <div class="brand-arrow">▼</div>
+      </div>
+      <div class="brand-dropdown" id="brand-dropdown" style="display:none">
+        <div class="brand-option selected" onclick="selectBrand('id8','ID8 Digital','#00E5A0')">
+          <div class="brand-dot" style="background:#00E5A0"></div>
+          ID8 Digital
+        </div>
+        <div class="brand-option" onclick="selectBrand('gental_care','Gental Care','#52B788')">
+          <div class="brand-dot" style="background:#52B788"></div>
+          Gental Care
+        </div>
+        <div class="brand-option" onclick="selectBrand('all','All Brands','#4D9FFF')">
+          <div class="brand-dot" style="background:#4D9FFF"></div>
+          All Brands
+        </div>
+      </div>
+    </div>
+
     <nav class="nav">
-      <div class="nav-s">Monitoring</div>
-      <button class="nav-i active" onclick="showPanel('live',this)"><span>📡</span> Live feed</button>
-      <button class="nav-i" onclick="showPanel('sentiment',this)"><span>📊</span> Sentiment</button>
-      <button class="nav-i" onclick="showPanel('escalations',this)"><span>🎫</span> Escalations <span class="nav-badge" id="esc-badge">0</span></button>
-      <div class="nav-s">Settings</div>
-      <button class="nav-i" onclick="showPanel('config',this)"><span>⚙️</span> Configuration</button>
+      <div class="nav-section">Monitor</div>
+      <button class="nav-item active" onclick="showPanel('live',this)">
+        <span class="nav-icon">📡</span> Live feed
+      </button>
+      <button class="nav-item" onclick="showPanel('sentiment',this)">
+        <span class="nav-icon">📊</span> Sentiment
+      </button>
+      <button class="nav-item" onclick="showPanel('escalations',this)">
+        <span class="nav-icon">🎫</span> Escalations
+        <span class="nav-badge" id="esc-badge">0</span>
+      </button>
+      <div class="nav-section">Settings</div>
+      <button class="nav-item" onclick="showPanel('config',this)">
+        <span class="nav-icon">⚙️</span> Configuration
+      </button>
     </nav>
-    <div class="sb-footer">
-      <div style="display:flex;align-items:center;gap:6px">
-        <span class="dot-on"></span>
-        <span>Live</span>
+
+    <div class="sb-bottom">
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        <span class="live-text">Engine live</span>
+        <span class="live-sub" id="live-time">—</span>
       </div>
       <button class="logout-btn" onclick="doLogout()">Sign out</button>
     </div>
@@ -225,11 +472,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
   <div class="main">
     <div class="topbar">
-      <div>
-        <div class="tb-title" id="page-title">Live feed</div>
-        <div class="tb-sub">Gental Care · Bidco Africa · Real-time data from Supabase</div>
+      <div class="page-title" id="page-title">Live feed</div>
+      <div class="topbar-actions" id="platform-filters">
+        <button class="filter-chip active" onclick="filterPlatform('all',this)">All</button>
+        <button class="filter-chip" onclick="filterPlatform('Facebook',this)">📘 Facebook</button>
+        <button class="filter-chip" onclick="filterPlatform('Instagram',this)">📸 Instagram</button>
+        <button class="filter-chip" onclick="filterPlatform('TikTok',this)">🎵 TikTok</button>
       </div>
-      <div class="live-dot"><div class="pulse"></div> Auto-processing on</div>
+      <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
     </div>
 
     <div class="content">
@@ -237,15 +487,34 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <!-- LIVE FEED -->
       <div class="panel active" id="panel-live">
         <div class="metrics">
-          <div class="mc g"><div class="mc-label">Total processed</div><div class="mc-val" id="m-total">—</div><div class="mc-foot">All time</div></div>
-          <div class="mc b"><div class="mc-label">Auto-replied</div><div class="mc-val" id="m-replied">—</div><div class="mc-foot">No human needed</div></div>
-          <div class="mc a"><div class="mc-label">Escalated</div><div class="mc-val" id="m-esc">—</div><div class="mc-foot">Human review</div></div>
-          <div class="mc r"><div class="mc-label">Moderated</div><div class="mc-val" id="m-mod">—</div><div class="mc-foot">Spam hidden</div></div>
+          <div class="metric-card m-green">
+            <div class="metric-label">Total processed</div>
+            <div class="metric-val" id="m-total">—</div>
+            <div class="metric-sub">All time</div>
+            <div class="metric-icon">💬</div>
+          </div>
+          <div class="metric-card m-blue">
+            <div class="metric-label">Auto-replied</div>
+            <div class="metric-val" id="m-replied">—</div>
+            <div class="metric-sub">No human needed</div>
+            <div class="metric-icon">⚡</div>
+          </div>
+          <div class="metric-card m-amber">
+            <div class="metric-label">Escalated</div>
+            <div class="metric-val" id="m-esc">—</div>
+            <div class="metric-sub">Human review</div>
+            <div class="metric-icon">🎫</div>
+          </div>
+          <div class="metric-card m-red">
+            <div class="metric-label">Moderated</div>
+            <div class="metric-val" id="m-mod">—</div>
+            <div class="metric-sub">Spam hidden</div>
+            <div class="metric-icon">🛡️</div>
+          </div>
         </div>
         <div class="card">
-          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
-            Recent messages
-            <button class="btn-sm" onclick="loadFeed()">↻ Refresh</button>
+          <div class="card-header">
+            <div class="card-title">Recent messages</div>
           </div>
           <div id="feed-list"><div class="loading"><span class="spin"></span>Loading...</div></div>
         </div>
@@ -255,18 +524,24 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="panel" id="panel-sentiment">
         <div class="two-col">
           <div class="card">
-            <div class="card-title">Sentiment breakdown</div>
-            <div class="sent-bar" id="sent-bar">
-              <div class="sp" style="width:0%"></div>
-              <div class="sn" style="width:0%"></div>
-              <div class="sg" style="width:0%"></div>
+            <div class="card-header"><div class="card-title">Sentiment breakdown</div></div>
+            <div class="sent-visual">
+              <div class="sent-bar-wrap" id="sent-bar">
+                <div class="sb-pos" style="width:0%"></div>
+                <div class="sb-neu" style="width:0%"></div>
+                <div class="sb-neg" style="width:0%"></div>
+              </div>
+              <div class="sent-legend" id="sent-legend">
+                <div class="sl-item"><div class="sl-dot" style="background:var(--green)"></div>Positive 0%</div>
+                <div class="sl-item"><div class="sl-dot" style="background:var(--text3)"></div>Neutral 0%</div>
+                <div class="sl-item"><div class="sl-dot" style="background:var(--red)"></div>Negative 0%</div>
+              </div>
             </div>
-            <div style="display:flex;gap:14px;font-size:11px;color:var(--muted);margin-bottom:16px" id="sent-legend">Loading...</div>
-            <div class="card-title">Daily trend</div>
+            <div class="card-header" style="margin-top:16px"><div class="card-title">Daily score trend</div></div>
             <div id="trend-list"><div class="loading"><span class="spin"></span>Loading...</div></div>
           </div>
           <div class="card">
-            <div class="card-title">Intent distribution</div>
+            <div class="card-header"><div class="card-title">Intent distribution</div></div>
             <div id="intent-list"><div class="loading"><span class="spin"></span>Loading...</div></div>
           </div>
         </div>
@@ -275,9 +550,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <!-- ESCALATIONS -->
       <div class="panel" id="panel-escalations">
         <div class="filter-row">
-          <button class="fb active" onclick="filterEsc('all',this)">All</button>
-          <button class="fb" onclick="filterEsc('open',this)">Open</button>
-          <button class="fb" onclick="filterEsc('resolved',this)">Resolved</button>
+          <button class="filter-chip active" onclick="filterEsc('all',this)">All</button>
+          <button class="filter-chip" onclick="filterEsc('open',this)">Open</button>
+          <button class="filter-chip" onclick="filterEsc('resolved',this)">Resolved</button>
         </div>
         <div id="esc-list"><div class="loading"><span class="spin"></span>Loading...</div></div>
       </div>
@@ -286,28 +561,27 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="panel" id="panel-config">
         <div class="two-col">
           <div class="card">
-            <div class="card-title">Supabase connection</div>
-            <label class="cfg-label">Supabase URL</label>
+            <div class="card-header"><div class="card-title">Supabase connection</div></div>
+            <label class="cfg-label">Project URL</label>
             <input type="text" class="cfg-input" id="cfg-url" placeholder="https://xxx.supabase.co" />
-            <label class="cfg-label">Supabase Anon Key</label>
+            <label class="cfg-label">Anon Key</label>
             <input type="password" class="cfg-input" id="cfg-key" placeholder="eyJ..." />
             <button class="btn-primary" onclick="saveConfig()">Save & reconnect</button>
-            <div style="font-size:12px;color:var(--muted);margin-top:10px" id="cfg-status"></div>
+            <div class="cfg-status" id="cfg-status"></div>
           </div>
           <div class="card">
-            <div class="card-title">ORM engine</div>
+            <div class="card-header"><div class="card-title">ORM engine</div></div>
             <label class="cfg-label">Engine URL</label>
             <input type="text" class="cfg-input" id="cfg-engine" placeholder="https://gental-care-orm.onrender.com" />
             <button class="btn-primary" onclick="checkEngine()">Check health</button>
-            <div style="font-size:12px;color:var(--muted);margin-top:10px" id="engine-status"></div>
+            <div class="cfg-status" id="engine-status"></div>
           </div>
         </div>
         <div class="card">
-          <div class="card-title">Dashboard users</div>
-          <div style="font-size:13px;color:var(--muted);line-height:1.6">
-            Users are managed through Supabase Authentication. To add a new team member:<br>
-            Go to <strong>supabase.com</strong> → your project → <strong>Authentication</strong> → <strong>Users</strong> → <strong>Invite user</strong>.<br>
-            They will receive an email to set their password and can then log into this dashboard.
+          <div class="card-header"><div class="card-title">Team access</div></div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7">
+            Manage team members via <strong>Supabase Authentication</strong>.<br>
+            Go to supabase.com → your project → Authentication → Users → Invite user.
           </div>
         </div>
       </div>
@@ -317,79 +591,93 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 </div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────
-const SUPABASE_URL  = localStorage.getItem('sb_url')  || 'https://bllwzthttpzdwqvldfoo.supabase.co';
-const SUPABASE_KEY  = localStorage.getItem('sb_key')  || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsbHd6dGh0dHB6ZHdxdmxkZm9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2ODMwMTksImV4cCI6MjA5MjI1OTAxOX0.3n1fgdGvEVjsvhPkaqwFVvpFScjS_1kJvip7ZVISlhU';
-const ENGINE_URL    = localStorage.getItem('engine_url') || 'https://gental-care-orm.onrender.com';
+const SUPABASE_URL = localStorage.getItem('sb_url') || 'https://bllwzthttpzdwqvldfoo.supabase.co';
+const SUPABASE_KEY = localStorage.getItem('sb_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsbHd6dGh0dHB6ZHdxdmxkZm9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2ODMwMTksImV4cCI6MjA5MjI1OTAxOX0.3n1fgdGvEVjsvhPkaqwFVvpFScjS_1kJvip7ZVISlhU';
+const ENGINE_URL = localStorage.getItem('engine_url') || 'https://gental-care-orm.onrender.com';
 
 let sb = null;
-let currentUser = null;
-let allEscalations = [];
+let currentBrand = 'id8';
+let currentPlatform = 'all';
 
-function initSupabase(url, key) {
-  try {
-    sb = supabase.createClient(url, key);
-    return true;
-  } catch(e) {
-    return false;
-  }
+function initSb(url, key) {
+  try { sb = supabase.createClient(url, key); return true; } catch(e) { return false; }
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────────
+// AUTH
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const errEl = document.getElementById('login-error');
-  errEl.textContent = '';
-
-  if (!email || !password) {
-    errEl.textContent = 'Please enter email and password';
-    return;
-  }
-
-  if (!sb) initSupabase(SUPABASE_URL, SUPABASE_KEY);
-
+  const pass = document.getElementById('login-password').value;
+  const err = document.getElementById('login-err');
+  err.textContent = '';
+  if (!email || !pass) { err.textContent = 'Please enter email and password'; return; }
+  if (!sb) initSb(SUPABASE_URL, SUPABASE_KEY);
   try {
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
     if (error) throw error;
-    currentUser = data.user;
     showApp();
-  } catch(err) {
-    errEl.textContent = err.message || 'Login failed. Check your credentials.';
-  }
+  } catch(e) { err.textContent = e.message || 'Login failed'; }
 }
 
 async function doLogout() {
   if (sb) await sb.auth.signOut();
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-page').style.display = 'flex';
-  currentUser = null;
 }
 
 async function checkSession() {
-  if (!sb) initSupabase(SUPABASE_URL, SUPABASE_KEY);
+  if (!sb) initSb(SUPABASE_URL, SUPABASE_KEY);
   const { data } = await sb.auth.getSession();
-  if (data.session) {
-    currentUser = data.session.user;
-    showApp();
-  }
+  if (data.session) showApp();
 }
 
 function showApp() {
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
+  updateLiveTime();
+  setInterval(updateLiveTime, 30000);
   loadAll();
-  // Auto-refresh every 30 seconds
   setInterval(loadAll, 30000);
-  // Real-time subscription
   subscribeRealtime();
 }
 
-// ── REALTIME ──────────────────────────────────────────────────────────
+function updateLiveTime() {
+  document.getElementById('live-time').textContent = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+
+// BRAND
+function toggleBrandDropdown() {
+  const dd = document.getElementById('brand-dropdown');
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+
+function selectBrand(id, name, color) {
+  currentBrand = id;
+  document.getElementById('brand-name').textContent = name;
+  document.getElementById('brand-dot').style.background = color;
+  document.getElementById('brand-dropdown').style.display = 'none';
+  loadAll();
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.sb-brand-wrap')) {
+    const dd = document.getElementById('brand-dropdown');
+    if (dd) dd.style.display = 'none';
+  }
+});
+
+// PLATFORM FILTER
+function filterPlatform(platform, btn) {
+  currentPlatform = platform;
+  document.querySelectorAll('#platform-filters .filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadFeed();
+}
+
+// REALTIME
 function subscribeRealtime() {
   if (!sb) return;
-  sb.channel('messages')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+  sb.channel('orm-live')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
       prependFeedItem(payload.new);
       loadMetrics();
     })
@@ -399,45 +687,43 @@ function subscribeRealtime() {
     .subscribe();
 }
 
-// ── LOAD ALL ──────────────────────────────────────────────────────────
-function loadAll() {
-  loadMetrics();
-  loadFeed();
-  loadSentiment();
-  loadEscalations();
-}
+function loadAll() { loadMetrics(); loadFeed(); loadSentiment(); loadEscalations(); }
 
-// ── METRICS ───────────────────────────────────────────────────────────
+// METRICS
 async function loadMetrics() {
   if (!sb) return;
   try {
-    const { count: total } = await sb.from('messages').select('*', { count: 'exact', head: true });
-    const { count: replied } = await sb.from('messages').select('*', { count: 'exact', head: true }).eq('action_taken', 'replied');
-    const { count: escalated } = await sb.from('messages').select('*', { count: 'exact', head: true }).eq('action_taken', 'escalated');
-    const { count: moderated } = await sb.from('messages').select('*', { count: 'exact', head: true }).eq('action_taken', 'moderated');
-    const { count: openEsc } = await sb.from('escalations').select('*', { count: 'exact', head: true }).eq('status', 'open');
-
+    let q = sb.from('messages').select('*', { count: 'exact', head: true });
+    if (currentBrand !== 'all') q = q.eq('brand', currentBrand === 'id8' ? 'ID8 Digital' : 'Gental Care');
+    const { count: total } = await q;
+    const { count: replied } = await sb.from('messages').select('*',{count:'exact',head:true}).eq('action_taken','replied');
+    const { count: escalated } = await sb.from('messages').select('*',{count:'exact',head:true}).eq('action_taken','escalated');
+    const { count: moderated } = await sb.from('messages').select('*',{count:'exact',head:true}).eq('action_taken','moderated');
+    const { count: openEsc } = await sb.from('escalations').select('*',{count:'exact',head:true}).eq('status','open');
     document.getElementById('m-total').textContent = total || 0;
     document.getElementById('m-replied').textContent = replied || 0;
     document.getElementById('m-esc').textContent = escalated || 0;
     document.getElementById('m-mod').textContent = moderated || 0;
     document.getElementById('esc-badge').textContent = openEsc || 0;
-  } catch(e) { console.error('Metrics error:', e); }
+  } catch(e) {}
 }
 
-// ── FEED ──────────────────────────────────────────────────────────────
+// FEED
 async function loadFeed() {
   if (!sb) return;
   const list = document.getElementById('feed-list');
   try {
-    const { data } = await sb.from('messages').select('*').order('created_at', { ascending: false }).limit(25);
+    let q = sb.from('messages').select('*').order('created_at',{ascending:false}).limit(30);
+    if (currentPlatform !== 'all') q = q.eq('platform', currentPlatform);
+    if (currentBrand !== 'all') q = q.eq('brand', currentBrand === 'id8' ? 'ID8 Digital' : 'Gental Care');
+    const { data } = await q;
     if (!data || data.length === 0) {
-      list.innerHTML = '<div class="empty">No messages yet. Waiting for incoming queries...</div>';
+      list.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">No messages yet</div></div>';
       return;
     }
-    list.innerHTML = data.map(m => feedItemHTML(m)).join('');
+    list.innerHTML = data.map(m => feedHTML(m)).join('');
   } catch(e) {
-    list.innerHTML = '<div class="empty">Error loading feed. Check Supabase connection.</div>';
+    list.innerHTML = '<div class="empty"><div class="empty-text">Error loading feed</div></div>';
   }
 }
 
@@ -445,160 +731,154 @@ function prependFeedItem(msg) {
   const list = document.getElementById('feed-list');
   const empty = list.querySelector('.empty');
   if (empty) list.innerHTML = '';
-  list.insertAdjacentHTML('afterbegin', feedItemHTML(msg));
+  list.insertAdjacentHTML('afterbegin', feedHTML(msg));
 }
 
-function feedItemHTML(m) {
-  const icons = { Facebook: '📘', Instagram: '📸', TikTok: '🎵' };
-  const iconClass = { Facebook: 'fi-fb', Instagram: 'fi-ig', TikTok: 'fi-tt' };
+function feedHTML(m) {
+  const icons = { Facebook:'📘', Instagram:'📸', TikTok:'🎵' };
+  const piClass = { Facebook:'pi-fb', Instagram:'pi-ig', TikTok:'pi-tt' };
   const actionBadge = {
-    replied: '<span class="badge b-reply">✅ Auto-replied</span>',
-    escalated: '<span class="badge b-esc">🎫 Escalated</span>',
-    moderated: '<span class="badge b-mod">🟣 Moderated</span>',
-    liked: '<span class="badge b-like">💚 Liked</span>',
-    action_failed: '<span class="badge b-high">⚠ Failed</span>',
+    replied:'<span class="badge b-reply">⚡ replied</span>',
+    escalated:'<span class="badge b-esc">🎫 escalated</span>',
+    moderated:'<span class="badge b-mod">🛡 moderated</span>',
+    liked:'<span class="badge b-like">💚 liked</span>',
+    action_failed:'<span class="badge b-fail">⚠ failed</span>',
   };
   const sentBadge = {
-    positive: '<span class="badge b-pos">positive</span>',
-    negative: '<span class="badge b-neg">negative</span>',
-    neutral: '<span class="badge b-neu">neutral</span>',
+    positive:'<span class="badge b-pos">↑ pos</span>',
+    negative:'<span class="badge b-neg">↓ neg</span>',
+    neutral:'<span class="badge b-neu">→ neu</span>',
   };
-  const time = new Date(m.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  const time = new Date(m.created_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   return `<div class="feed-item">
-    <div class="feed-icon ${iconClass[m.platform] || 'fi-fb'}">${icons[m.platform] || '💬'}</div>
+    <div class="feed-platform-icon ${piClass[m.platform]||'pi-fb'}">${icons[m.platform]||'💬'}</div>
     <div class="feed-body">
-      <div class="feed-meta">
-        <span class="feed-platform">${m.platform || 'Unknown'}</span>
-        <span class="feed-type-tag">${m.type || 'comment'}</span>
+      <div class="feed-top">
+        <span class="feed-platform-label">${m.platform||'Unknown'}</span>
+        <span class="feed-type">${m.type||'dm'}</span>
         <span class="feed-time">${time}</span>
-        ${sentBadge[m.sentiment] || ''}
       </div>
-      <div class="feed-msg">"${(m.message_text || '').slice(0, 120)}${m.message_text?.length > 120 ? '...' : ''}"</div>
-      <div style="display:flex;gap:6px;align-items:center">
-        ${actionBadge[m.action_taken] || ''}
-        ${m.intent ? `<span style="font-size:11px;color:var(--muted)">${m.intent.replace(/_/g,' ')}</span>` : ''}
+      <div class="feed-msg">"${(m.message_text||'').slice(0,120)}${(m.message_text||'').length>120?'...':''}"</div>
+      <div class="feed-tags">
+        ${actionBadge[m.action_taken]||''}
+        ${sentBadge[m.sentiment]||''}
+        ${m.intent?`<span class="intent-tag">${m.intent.replace(/_/g,' ')}</span>`:''}
       </div>
     </div>
   </div>`;
 }
 
-// ── SENTIMENT ─────────────────────────────────────────────────────────
+// SENTIMENT
 async function loadSentiment() {
   if (!sb) return;
   try {
     const { data: msgs } = await sb.from('messages').select('sentiment');
     if (msgs && msgs.length > 0) {
-      const pos = msgs.filter(m => m.sentiment === 'positive').length;
-      const neu = msgs.filter(m => m.sentiment === 'neutral').length;
-      const neg = msgs.filter(m => m.sentiment === 'negative').length;
+      const pos = msgs.filter(m=>m.sentiment==='positive').length;
+      const neu = msgs.filter(m=>m.sentiment==='neutral').length;
+      const neg = msgs.filter(m=>m.sentiment==='negative').length;
       const total = msgs.length;
       const posP = Math.round((pos/total)*100);
       const neuP = Math.round((neu/total)*100);
-      const negP = 100 - posP - neuP;
-      const bar = document.getElementById('sent-bar');
-      bar.innerHTML = `<div class="sp" style="width:${posP}%"></div><div class="sn" style="width:${neuP}%"></div><div class="sg" style="width:${negP}%"></div>`;
+      const negP = 100-posP-neuP;
+      document.getElementById('sent-bar').innerHTML = `
+        <div class="sb-pos" style="width:${posP}%"></div>
+        <div class="sb-neu" style="width:${neuP}%"></div>
+        <div class="sb-neg" style="width:${negP}%"></div>`;
       document.getElementById('sent-legend').innerHTML = `
-        <span style="color:var(--green)">■</span> Positive ${posP}%
-        &nbsp;<span style="color:#94A3B8">■</span> Neutral ${neuP}%
-        &nbsp;<span style="color:var(--red)">■</span> Negative ${negP}%`;
+        <div class="sl-item"><div class="sl-dot" style="background:var(--green)"></div>Positive ${posP}%</div>
+        <div class="sl-item"><div class="sl-dot" style="background:var(--text3)"></div>Neutral ${neuP}%</div>
+        <div class="sl-item"><div class="sl-dot" style="background:var(--red)"></div>Negative ${negP}%</div>`;
     }
-
-    const { data: trends } = await sb.from('sentiment_daily').select('*').order('date', { ascending: false }).limit(14);
+    const { data: trends } = await sb.from('sentiment_daily').select('*').order('date',{ascending:false}).limit(14);
     const trendEl = document.getElementById('trend-list');
     if (!trends || trends.length === 0) {
-      trendEl.innerHTML = '<div class="empty">No trend data yet</div>';
+      trendEl.innerHTML = '<div class="empty"><div class="empty-text">No trend data yet</div></div>';
     } else {
-      trendEl.innerHTML = trends.map(t => `
+      trendEl.innerHTML = trends.map(t=>`
         <div class="trend-row">
           <span class="trend-date">${t.date}</span>
-          <div class="trend-bar"><div class="trend-fill" style="width:${t.score || 0}%"></div></div>
-          <span class="trend-score">${t.score || 0}</span>
+          <div class="trend-track"><div class="trend-fill" style="width:${t.score||0}%"></div></div>
+          <span class="trend-score">${t.score||0}</span>
         </div>`).join('');
     }
-
     const { data: intents } = await sb.from('messages').select('intent');
     const intentEl = document.getElementById('intent-list');
     if (intents && intents.length > 0) {
       const counts = {};
-      intents.forEach(m => { if(m.intent) counts[m.intent] = (counts[m.intent] || 0) + 1; });
-      const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,8);
-      const max = sorted[0]?.[1] || 1;
-      intentEl.innerHTML = sorted.map(([intent, count]) => `
-        <div class="ib-row">
-          <span class="ib-name">${intent.replace(/_/g,' ')}</span>
-          <div class="ib-track"><div class="ib-fill" style="width:${Math.round((count/max)*100)}%"></div></div>
-          <span class="ib-count">${count}</span>
+      intents.forEach(m => { if(m.intent) counts[m.intent]=(counts[m.intent]||0)+1; });
+      const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+      const max = sorted[0]?.[1]||1;
+      intentEl.innerHTML = sorted.map(([intent,count])=>`
+        <div class="intent-row">
+          <span class="intent-name">${intent.replace(/_/g,' ')}</span>
+          <div class="intent-track"><div class="intent-fill" style="width:${Math.round((count/max)*100)}%"></div></div>
+          <span class="intent-count">${count}</span>
         </div>`).join('');
     } else {
-      intentEl.innerHTML = '<div class="empty">No data yet</div>';
+      intentEl.innerHTML = '<div class="empty"><div class="empty-text">No data yet</div></div>';
     }
-  } catch(e) { console.error('Sentiment error:', e); }
+  } catch(e) {}
 }
 
-// ── ESCALATIONS ───────────────────────────────────────────────────────
-async function loadEscalations(filter = 'all') {
+// ESCALATIONS
+async function loadEscalations(filter='all') {
   if (!sb) return;
-  const list = document.getElementById('esc-list');
   try {
-    let query = sb.from('escalations').select('*').order('created_at', { ascending: false });
-    if (filter === 'open') query = query.eq('status', 'open');
-    if (filter === 'resolved') query = query.eq('status', 'resolved');
-    const { data } = await query;
-    allEscalations = data || [];
-    renderEscalations(allEscalations);
-  } catch(e) {
-    list.innerHTML = '<div class="empty">Error loading escalations</div>';
-  }
+    let q = sb.from('escalations').select('*').order('created_at',{ascending:false});
+    if (filter==='open') q = q.eq('status','open');
+    if (filter==='resolved') q = q.eq('status','resolved');
+    const { data } = await q;
+    renderEscalations(data||[]);
+  } catch(e) {}
 }
 
 function filterEsc(type, btn) {
-  document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.filter-row .filter-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
   loadEscalations(type);
 }
 
 function renderEscalations(data) {
   const list = document.getElementById('esc-list');
   if (!data || data.length === 0) {
-    list.innerHTML = '<div class="empty">No escalations — all clear! ✅</div>';
+    list.innerHTML = '<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">No escalations — all clear!</div></div>';
     return;
   }
-  const stripeColors = { QUALITY: 'var(--red)', SAFETY: 'var(--red)', NEGATIVE: '#E67E22', COMPLAINT: 'var(--amber)', UNKNOWN: 'var(--muted)' };
-  list.innerHTML = data.map(e => `
+  const stripes = { QUALITY:'var(--red)', SAFETY:'var(--red)', NEGATIVE:'var(--amber)', COMPLAINT:'var(--amber)', LEGAL:'var(--red)', UNKNOWN:'var(--text3)' };
+  list.innerHTML = data.map(e=>`
     <div class="esc-card" id="esc-${e.id}">
       <div class="esc-inner">
-        <div class="esc-stripe" style="background:${stripeColors[e.tag] || 'var(--muted)'}"></div>
+        <div class="esc-stripe" style="background:${stripes[e.tag]||'var(--text3)'}"></div>
         <div class="esc-body">
-          <div class="esc-id">${e.id?.slice(0,8)}... · ${e.platform || 'Unknown'} · ${new Date(e.created_at).toLocaleDateString()}</div>
-          <div class="esc-msg">"${(e.message_text || '').slice(0,150)}"</div>
+          <div class="esc-meta">
+            <span class="esc-id">${e.id?.slice(0,8)}...</span>
+            <span class="badge b-${e.status==='open'?'esc':'like'}">${e.status}</span>
+            <span class="badge b-${e.priority==='high'?'fail':e.priority==='medium'?'esc':'like'}">${e.priority||'medium'}</span>
+            ${e.tag?`<span class="badge b-neu" style="font-family:'DM Mono',monospace;font-size:10px">${e.tag}</span>`:''}
+          </div>
+          <div class="esc-msg">"${(e.message_text||'').slice(0,150)}"</div>
           <div class="esc-tags">
-            <span class="badge b-${e.priority === 'high' ? 'high' : e.priority === 'medium' ? 'med' : 'low'}">${e.priority || 'medium'} priority</span>
-            ${e.tag ? `<span style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${e.tag}</span>` : ''}
-            <span class="badge ${e.status === 'open' ? 'b-esc' : 'b-like'}">${e.status}</span>
+            <span style="font-size:11px;color:var(--text3)">${e.platform||'Unknown'} · ${new Date(e.created_at).toLocaleDateString()}</span>
           </div>
         </div>
       </div>
-      ${e.status === 'open' ? `
+      ${e.status==='open'?`
       <div class="esc-actions">
-        <button class="btn-sm g" onclick="resolveEsc('${e.id}')">✓ Mark resolved</button>
-        <button class="btn-sm" onclick="copyEsc('${e.message_text?.replace(/'/g,"\\'")}')">📋 Copy message</button>
-      </div>` : ''}
+        <button class="btn-sm primary" onclick="resolveEsc('${e.id}')">✓ Mark resolved</button>
+        <button class="btn-sm" onclick="navigator.clipboard.writeText('${(e.message_text||'').replace(/'/g,"\\'")}').then(()=>alert('Copied!'))">📋 Copy</button>
+      </div>`:''}
     </div>`).join('');
 }
 
 async function resolveEsc(id) {
   if (!sb) return;
-  await sb.from('escalations').update({ status: 'resolved', resolved_at: new Date().toISOString() }).eq('id', id);
-  const card = document.getElementById(`esc-${id}`);
-  if (card) card.style.opacity = '0.4';
+  await sb.from('escalations').update({ status:'resolved', resolved_at:new Date().toISOString() }).eq('id', id);
+  document.getElementById(`esc-${id}`).style.opacity = '0.4';
   loadMetrics();
 }
 
-function copyEsc(msg) {
-  navigator.clipboard.writeText(msg || '').then(() => alert('Message copied!'));
-}
-
-// ── CONFIG ────────────────────────────────────────────────────────────
+// CONFIG
 function saveConfig() {
   const url = document.getElementById('cfg-url').value.trim();
   const key = document.getElementById('cfg-key').value.trim();
@@ -606,10 +886,7 @@ function saveConfig() {
   if (url) localStorage.setItem('sb_url', url);
   if (key) localStorage.setItem('sb_key', key);
   if (engine) localStorage.setItem('engine_url', engine);
-  if (url && key) {
-    initSupabase(url, key);
-    document.getElementById('cfg-status').textContent = '✅ Saved — reload to apply';
-  }
+  if (url && key) { initSb(url, key); document.getElementById('cfg-status').textContent = '✅ Saved — reload to apply'; }
 }
 
 async function checkEngine() {
@@ -617,39 +894,34 @@ async function checkEngine() {
   const el = document.getElementById('engine-status');
   el.textContent = 'Checking...';
   try {
-    const resp = await fetch(url + '/health');
+    const resp = await fetch(url+'/health');
     const data = await resp.json();
-    el.innerHTML = data.status === 'ok'
-      ? `✅ Online · Claude: ${data.config.claude ? '✅' : '❌'} · ManyChat: ${data.config.manychat ? '✅' : '❌'} · Supabase: ${data.config.supabase ? '✅' : '❌'}`
+    el.innerHTML = data.status==='ok'
+      ? `✅ Online · Claude: ${data.config.claude?'✅':'❌'} · ManyChat: ${data.config.manychat?'✅':'❌'} · Supabase: ${data.config.supabase?'✅':'❌'}`
       : '❌ Engine error';
-  } catch(e) {
-    el.textContent = '❌ Cannot reach engine';
-  }
+  } catch(e) { el.textContent = '❌ Cannot reach engine'; }
 }
 
-// ── NAV ───────────────────────────────────────────────────────────────
-const TITLES = { live: 'Live feed', sentiment: 'Sentiment analytics', escalations: 'Escalations', config: 'Configuration' };
-
+// NAV
+const TITLES = { live:'Live feed', sentiment:'Sentiment analytics', escalations:'Escalations', config:'Configuration' };
 function showPanel(name, btn) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-i').forEach(n => n.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
   if (btn) btn.classList.add('active');
-  document.getElementById('page-title').textContent = TITLES[name] || name;
-  if (name === 'sentiment') loadSentiment();
-  if (name === 'escalations') loadEscalations();
+  document.getElementById('page-title').textContent = TITLES[name]||name;
+  document.getElementById('platform-filters').style.display = name==='live' ? 'flex' : 'none';
+  if (name==='sentiment') loadSentiment();
+  if (name==='escalations') loadEscalations();
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────
+// INIT
 document.addEventListener('DOMContentLoaded', () => {
-  const url = localStorage.getItem('sb_url') || SUPABASE_URL;
-  const key = localStorage.getItem('sb_key') || SUPABASE_KEY;
-  if (url && key && !url.includes('PLACEHOLDER')) {
-    initSupabase(url, key);
-    checkSession();
-  }
+  const url = localStorage.getItem('sb_url')||SUPABASE_URL;
+  const key = localStorage.getItem('sb_key')||SUPABASE_KEY;
   document.getElementById('cfg-url').value = url.includes('PLACEHOLDER') ? '' : url;
-  document.getElementById('cfg-engine').value = localStorage.getItem('engine_url') || ENGINE_URL;
+  document.getElementById('cfg-engine').value = localStorage.getItem('engine_url')||ENGINE_URL;
+  if (url && key && !url.includes('PLACEHOLDER')) { initSb(url, key); checkSession(); }
 });
 </script>
 </body>
